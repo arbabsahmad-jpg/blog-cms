@@ -1,0 +1,141 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-paper-50 text-ink-900 dark:bg-ink-950 dark:text-paper-100;
+  font-family: var(--font-body);
+}
+
+::selection {
+  @apply bg-accent-100 text-accent-700;
+}
+
+/* Visible keyboard focus everywhere */
+:focus-visible {
+  outline: 2px solid theme("colors.accent.500");
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Tiptap editor + rendered post content share these rules */
+.ProseMirror table,
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+}
+.ProseMirror th,
+.ProseMirror td,
+.prose th,
+.prose td {
+  border: 1px solid theme("colors.paper.200");
+  padding: 0.5em 0.75em;
+  text-align: left;
+}
+.dark .ProseMirror th,
+.dark .ProseMirror td,
+.dark .prose th,
+.dark .prose td {
+  border-color: theme("colors.ink.700");
+}
+.ProseMirror ul[data-type="taskList"],
+.prose ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0;
+}
+.ProseMirror ul[data-type="taskList"] li,
+.prose ul[data-type="taskList"] li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5em;
+}
+.ProseMirror ul[data-type="taskList"] li > label,
+.prose ul[data-type="taskList"] li > label {
+  margin-top: 0.3em;
+}
+.ProseMirror iframe,
+.prose iframe {
+  max-width: 100%;
+  border-radius: 0.875rem;
+}
+.ProseMirror pre,
+.prose pre {
+  background: theme("colors.ink.900");
+  color: theme("colors.paper.100");
+  border-radius: 0.75rem;
+  padding: 1em;
+  overflow-x: auto;
+}
+.ProseMirror code,
+.prose code {
+  border-radius: 0.25rem;
+}
+
+/* 3D tilt utilities for the hero stack and article cards */
+.perspective {
+  perspective: 1400px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+/* Animated gradient mesh, used behind the hero */
+.gradient-mesh {
+  background-image:
+    radial-gradient(at 20% 20%, rgba(62, 99, 221, 0.35) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, rgba(102, 133, 230, 0.25) 0px, transparent 50%),
+    radial-gradient(at 50% 80%, rgba(62, 99, 221, 0.2) 0px, transparent 50%);
+}
+
+/* Shimmering accent text */
+.text-shimmer {
+  background: linear-gradient(90deg, theme("colors.accent.400"), theme("colors.paper.50"), theme("colors.accent.400"));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-float-slow,
+  .animate-spin-slow,
+  .animate-blob,
+  .animate-shimmer,
+  .text-shimmer {
+    animation: none !important;
+  }
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+  color: theme("colors.ink.600");
+}
