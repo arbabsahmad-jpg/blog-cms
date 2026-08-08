@@ -1,24 +1,34 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Lock, Mail, Loader2 } from "lucide-react";
 
 export default function AdminLoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <AdminLoginForm />
+    </Suspense>
+  );
+}
+
+function AdminLoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") || "/admin";
-useEffect(() => {
-  const supabase = createClient();
-  supabase.auth.getUser().then(({ data: { user } }) => {
-    if (user) router.push(redirectTo);
-  });
-}, [redirectTo, router]);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) router.push(redirectTo);
+    });
+  }, [redirectTo, router]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
